@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>alphaEventViewer</title>
+    <link href="~/images/alphadata32.png" rel="shortcut icon" type="image/png"/>
+
+    <environment include="Development">
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css"/>
+</head>
+
+<body>
+    <environment include="Development">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <div>
+        <img src="/images/blau.png" id="BackBg"/>
+        <img src="/images/strich3.png" id="BackBg2"/>
+    </div>
+
+    <div class="container">
+    <div id="center">
+
+        <a href="/">
+            <img src="/images/alphalogo192x192.jpg" class="rounded" height="42" width="42" style="margin-bottom: 15px;">
+        </a>
+
+        <a id="navbars-title" class="navbar-brand" href="/" style="">
+
+            <h2 class="my-1" style="padding-top: 20px;">lphaEventViewer</h2>
+
+        </a>
+
+        <div id="nav-button" class="nav-collapse">
+            <div id="triple-bar" class="disable-selection">&#9776;</div>
+
+            <div class="container" id="navbar-area" style="position: absolute; right: 45px; top: 1px; width: 450px">
+                <div class="row">
+                    <div class="col">
+                        <a href="/" class="page-nav">Verantstaltungen</a>
+                    </div>
+                    <div class="col">
+                        <a asp-area="" asp-page="/Impressum" class="page-nav">Impressum</a>
+                    </div>
+                    <div class="col">
+                        <a asp-area="" asp-page="/Privacy" class="page-nav">Datenschutz</a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <script>
+            var shallBeShown = false;
+            $("#navbar-area").hide();
+            $("#nav-button").click(function(e) {
+                if (shallBeShown) {
+                    $("#navbar-area").hide();
+                } else {
+                    $("#navbar-area").show();
+                }
+
+                shallBeShown = !shallBeShown;
+            });
+        </script>
+    </div>
+
+    <br>
+    <div class="container">
+        <partial name="_CookieConsentPartial"/>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2019 - alphaEventViewer - <a asp-area="" asp-page="/Privacy" id="page-nav">Datenschutzerklärung</a>
+            </div>
+        </footer>*@
+
+
+
+    @RenderSection("Scripts", false)</div>
+
+
+</body>
+</html>

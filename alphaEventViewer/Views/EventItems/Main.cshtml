@@ -1,0 +1,51 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model alphaEventViewer.PaginatedList<alphaEventViewer.Models.EventItemEntity>
+
+@{
+    ViewBag.Title = "Veranstaltungen";
+    Layout = "_Layout";
+}
+
+<div id="eventItem-body" class="shadow-lg">
+    <h2 id="headers">
+        Verfügbare Veranstaltungen
+    </h2>
+    <table class="table">
+        <thead>
+        <tr id="table-header">
+            <th scope="col">Titel</th>
+            <th scope="col">Beginn</th>
+            <th scope="col">Ort</th>
+        </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr id="event-item-box" onclick="window.location = '/@item.EventItemId';">
+                <td>@item.Title</td>
+                <td>@item.Beginning</td>
+                <td>@item.City</td>
+            </tr>
+        }
+
+    </table>
+    
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <a asp-action="Main"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="page-nav btn btn-default @prevDisabled">
+        Zurück
+    </a>
+    <a asp-action="Main"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="page-nav btn btn-default @nextDisabled ">
+        Weiter
+    </a>
+
+
+</div>
+
+

@@ -1,0 +1,29 @@
+﻿@using Microsoft.EntityFrameworkCore
+@model alphaEventViewer.Controller.RegistrationSuccessViewModel
+
+@{
+    ViewBag.Title = "Bestätigung";
+    Layout = "_Layout";
+}
+
+@if (Model.RegistrationSuccess)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 30px">
+        Sie haben sich erfolgreich für die Veranstaltung angemeldet.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (Model.RegistrationError)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 30px">
+        Anmeldung ist fehlgeschlagen. <br/>
+        Entweder wurde die Anmeldung bereits bestätigt oder es ist ein Fehler aufgetreten
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+

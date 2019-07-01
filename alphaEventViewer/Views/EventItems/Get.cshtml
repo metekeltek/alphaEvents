@@ -1,0 +1,276 @@
+﻿@model alphaEventViewer.Controller.GetViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewBag.Title = "Anmelden";
+    Layout = "_Layout";
+}
+
+<div id="eventItem-body" class="shadow-lg">
+    <h2 id="headers2">@Model.EventItem.Title</h2>
+    <dl class="row">
+        @if (!string.IsNullOrEmpty(Model.EventItem.SerialNumber))
+        {
+            <dt class="col-sm-3" style="font-weight: 600;">Artikelnummer</dt>
+            <dd class="col-sm-9">@Model.EventItem.SerialNumber</dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.EventItem.EventType))
+        {
+            <dt class="col-sm-3" style="font-weight: 600;">Veranstaltungstyp</dt>
+            <dd class="col-sm-9">@Model.EventItem.EventType</dd>
+        }
+        @if (Model.EventItem.Beginning != null && Model.EventItem.Beginning != DateTime.MinValue)
+        {
+            <dt class="col-sm-3" style="font-weight: 600;">Beginn</dt>
+            <dd class="col-sm-9">@Model.EventItem.Beginning?.ToString("dd.MM.yyyy hh:mm")</dd>
+        }
+        @if (Model.EventItem.End != null && Model.EventItem.End != DateTime.MinValue)
+        {
+            <dt class="col-sm-3" style="font-weight: 600;">Ende</dt>
+            <dd class="col-sm-9">@Model.EventItem.End?.ToString("dd.MM.yyyy hh:mm")</dd>
+        }
+
+        <dt class="col-sm-3" style="font-weight: 600;">Preis</dt>
+        <dd class="col-sm-9">@Model.EventItem.FullPrice</dd>
+
+
+        @if (!string.IsNullOrEmpty(Model.EventItem.Location))
+        {
+            <dt class="col-sm-3" style="font-weight: 600;">Veranstaltungsort</dt>
+            <dd class="col-sm-9">@Model.EventItem.Location</dd>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.EventItem.Director))
+        {
+            <dt class="col-sm-3" style="font-weight: 600;">Direktor</dt>
+            <dd class="col-sm-9">@Model.EventItem.Director</dd>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.EventItem.Description))
+        {
+            <dt class="col-sm-3" style="font-weight: 600;">Beschreibung</dt>
+            <dd class="col-sm-9">@Model.EventItem.Description</dd>
+        }
+    </dl>
+
+
+
+    @if (Model.Error)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Es ist ein Fehler aufgetreten.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (Model.Success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Daten wurden gespeichert. Bitte überprüfen sie ihr E-Mail Postfach um die Anmeldung zu bestätigen.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <br>
+
+    <button id="anmelden" class="btn btn-primary btn-block hide-me" type="button" data-toggle="collapse" data-target="#collapseRegister" aria-expanded="false" aria-controls="collapseRegister">
+        
+        <div class="bounce">
+            <div class="booking">Anmelden</div>
+            <div class="arrow">&#x27A4;</div>
+        </div>
+        
+    </button>
+    <div class="collapse" id="collapseRegister">
+
+        <form asp-action="Get" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="EventItem.EventItemId" />
+        
+            <div id="buchen" class="card card-body">
+                
+                <div class="row">
+                    <div class="col-auto mr-auto">
+                        <h4>Veranstaltung buchen</h4>
+                    </div>
+                    <div class=".col-auto">
+                        <button id="schließen" class="btn btn-secondary btn-sm btn-outline-light" type="button" data-toggle="collapse" data-target="#collapseRegister" aria-expanded="false" aria-controls="collapseRegister">
+                           <div class="x">&#x2715;</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <hr/>
+                @if (Model.EventItem.Modules.Any())
+                {
+                <div class="row">
+                    <div class="col">
+                        <h5>Module: </h5>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="addModuleButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                hinzufügen
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="addModuleButton">
+                                @foreach (var module in Model.EventItem.Modules)
+                                {
+                                    <button class="dropdown-item" id="sasasa" onclick="addModule(this)" value="@module.Title">@module.Title (+@module.FullPrice)</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+                   
+                        
+
+                    @*<dl class="row">
+                        <dt class="col-sm-3"><h5>Module: </h5></dt>
+                        <dd class="col-sm-9"><table class="table table-sm">
+                            <tbody id="ModuleBody">
+                            @foreach (var module in Model.EventItem.Modules)
+                            {
+                                <tr id="itemsss" onclick="">
+                                    <td>
+                                        @module.Title
+                                        <button type="button" id="removeModule" class="btn btn-teal btn-rounded btn-sm m-0"> &#x2715;</button>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table></dd>
+                    </dl>*@
+
+                 @*<div class="row">
+                            <div class="col-sm">
+                               
+                            </div>
+
+                            <div class="col-sm">
+                                <table class="table table-sm">
+                                    <tbody id="ModuleBody">
+                                    @foreach (var module in Model.EventItem.Modules)
+                                    {
+                                        <tr id="itemsss" onclick="">
+                                            <td>
+                                                @module.Title
+                                                <button type="button" id="removeModule" class="btn btn-teal btn-rounded btn-sm m-0"> &#x2715;</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>*@
+               
+                        
+
+
+                }
+
+                <h5>Teilnehmerdaten: </h5>
+
+                <div class="row">
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.Salutation" class="control-label"></label>
+                        <div class="input-group" >
+                            <select asp-for="Participation.Salutation" asp-items="@(new SelectList(new List<string>{"Herr","Frau"}))"  class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" required></select>    
+                        </div>
+                    </div>
+
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.Title" class="control-label"></label>
+                        <input asp-for="Participation.Title" class="form-control"/>
+                        <span asp-validation-for="Participation.Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.FirstName" class="control-label"></label>
+                        <input asp-for="Participation.FirstName" class="form-control" required/>
+                        <span asp-validation-for="Participation.FirstName" class="text-danger"></span>
+                    </div>
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.LastName" class="control-label"></label>
+                        <input asp-for="Participation.LastName" class="form-control" required/>
+                        <span asp-validation-for="Participation.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.Street" class="control-label"></label>
+                        <input asp-for="Participation.Street" class="form-control" required/>
+                        <span asp-validation-for="Participation.Street" class="text-danger"></span>
+                    </div>
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.ZipCode"  class="control-label"></label>
+                        <input asp-for="Participation.ZipCode" class="form-control" required/>
+                        <span asp-validation-for="Participation.ZipCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.City" class="control-label"></label>
+                        <input asp-for="Participation.City" class="form-control" required/>
+                        <span asp-validation-for="Participation.City" class="text-danger"></span>
+                    </div>
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.Country" class="control-label"></label>
+                        <input asp-for="Participation.Country" class="form-control" value="Deutschland" required/>
+                        <span asp-validation-for="Participation.Country" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.EMailAddress" class="control-label"></label>
+                        <input asp-for="Participation.EMailAddress" class="form-control" required/>
+                        <span asp-validation-for="Participation.EMailAddress" class="text-danger"></span>
+                    </div>
+                    <div id="register-body-item" class="col">
+                        <label asp-for="Participation.Phone" class="control-label"></label>
+                        <input asp-for="Participation.Phone" class="form-control"/>
+                        <span asp-validation-for="Participation.Phone" class="text-danger"></span>
+                    </div>
+                </div>
+                <br>
+
+                <p><input id="dsgvo" type="checkbox" required name="terms"> Ich bin einverstanden mit der Speicherung meiner Daten</p>
+
+                <div class="form-group">
+                    <input id="speichern" type="submit" value="Speichern" class="btn btn-primary btn-block"/>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function addModule(value) {
+
+        document.getElementById("ModuleBody").innerHTML +=
+            '<tr id="itemsss" onclick="">' +
+                ' <td>' +
+                    value.value +
+                    '<button type="button" id="removeModule" class="btn btn-teal btn-rounded btn-sm m-0" >  &#x2715;</button>' +
+                ' </td>' +
+            '</tr>';
+    };
+
+    function removeModule() {
+        var deleteBtn = document.getElementById("deleteFilterButton");
+        deleteBtn.addEventListener("click", function () {
+            $('.wrapper').last().remove();
+        });
+
+    }
+</script>
+
